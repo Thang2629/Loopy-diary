@@ -1,6 +1,7 @@
-# React + Vite
+# Loopy Diary 🍭
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chào mừng đến với Loopy Diary! Trang web đã được deploy tại: https://thang2629.github.io/Loopy-diary/
+
 
 Currently, two official plugins are available:
 
