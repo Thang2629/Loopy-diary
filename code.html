@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loopy Diary - Spin for Joy!</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&amp;family=Plus+Jakarta+Sans:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#ffffff",
+                      "on-background": "#1a1c1c",
+                      "on-tertiary-container": "#5a5153",
+                      "on-tertiary-fixed": "#211a1c",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#2f3131",
+                      "on-secondary-fixed": "#3f0017",
+                      "on-secondary-fixed-variant": "#812240",
+                      "inverse-on-surface": "#f0f1f1",
+                      "on-tertiary-fixed-variant": "#4e4447",
+                      "secondary-fixed-dim": "#ffb1c1",
+                      "primary": "#884d5a",
+                      "primary-container": "#feb3c1",
+                      "primary-fixed": "#ffd9df",
+                      "on-secondary-container": "#781b39",
+                      "surface-dim": "#dadada",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#665c5e",
+                      "on-primary-fixed-variant": "#6c3642",
+                      "outline-variant": "#d6c2c4",
+                      "outline": "#847375",
+                      "secondary-fixed": "#ffd9df",
+                      "on-surface": "#1a1c1c",
+                      "surface-container-low": "#f3f3f4",
+                      "tertiary-container": "#d2c4c7",
+                      "secondary-container": "#ff85a2",
+                      "tertiary-fixed-dim": "#d1c3c6",
+                      "surface-container-highest": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "on-primary-fixed": "#370b18",
+                      "primary-fixed-dim": "#fdb2c0",
+                      "background": "#f9f9f9",
+                      "on-primary-container": "#7a424e",
+                      "error": "#ba1a1a",
+                      "surface-tint": "#884d5a",
+                      "surface": "#f9f9f9",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f9f9f9",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e2e2e2",
+                      "on-surface-variant": "#514345",
+                      "secondary": "#a03a57",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#eeeeee",
+                      "tertiary-fixed": "#eddfe2",
+                      "inverse-primary": "#fdb2c0",
+                      "loopy-cream": "#FFF0F3",
+                      "loopy-pink": "#FEB3C1",
+                      "loopy-rose": "#FF85A2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-gap": "24px",
+                      "gutter": "16px",
+                      "container-margin-dt": "40px",
+                      "container-margin-mb": "20px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Quicksand"],
+                      "label-lg": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Quicksand"],
+                      "body-lg": ["Quicksand"],
+                      "body-md": ["Quicksand"],
+                      "headline-md": ["Quicksand"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #FFF0F3; overflow-x: hidden; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .glossy-button {
+            background: linear-gradient(180deg, #FF85A2 0%, #a03a57 100%);
+            box-shadow: 0 4px 0 #781b39, 0 8px 15px rgba(160, 58, 87, 0.4);
+            transition: all 0.2s ease;
+        }
+        .glossy-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 #781b39, 0 4px 10px rgba(160, 58, 87, 0.2);
+        }
+        
+        /* Slot Machine Styles */
+        .slot-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border: 8px solid #FFFFFF;
+            box-shadow: 0 10px 30px rgba(254, 179, 193, 0.4);
+            position: relative;
+            background: #ffffff;
+            border-radius: 2rem;
+        }
+        .slot-track {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0s cubic-bezier(0.1, 0, 0, 1);
+        }
+        .slot-item {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #884d5a;
+            border-bottom: 1px solid rgba(254, 179, 193, 0.2);
+            flex-shrink: 0;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .slot-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(to bottom, 
+                rgba(255,255,255,0.9) 0%, 
+                transparent 20%, 
+                transparent 80%, 
+                rgba(255,255,255,0.9) 100%);
+            z-index: 5;
+        }
+        .selection-marker {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 100px;
+            transform: translateY(-50%);
+            border: 4px solid #FF85A2;
+            background: rgba(255, 133, 162, 0.05);
+            z-index: 2;
+            border-radius: 1rem;
+            margin: 0 8px;
+        }
+
+        /* Celebration Sunburst */
+        .sunburst {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            transform: translate(-50%, -50%) scale(0);
+            background: radial-gradient(circle, rgba(254, 179, 193, 0.4) 0%, transparent 70%);
+            z-index: -1;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+        }
+        .sunburst.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            animation: rotate-sunburst 20s linear infinite;
+        }
+        @keyframes rotate-sunburst {
+            from { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            to { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+        }
+
+        @keyframes float {
+            from { transform: translateY(0) rotate(-12deg); }
+            to { transform: translateY(-15px) rotate(-12deg); }
+        }
+        @keyframes wiggle {
+            from { transform: rotate(7deg); }
+            to { transform: rotate(17deg); }
+        }
+        @keyframes pulse {
+            from { transform: scale(0.95) rotate(-6deg); }
+            to { transform: scale(1.05) rotate(-6deg); }
+        }
+        @keyframes swing {
+            from { transform: rotate(10deg); }
+            to { transform: rotate(20deg); }
+        }
+        .animate-float { animation: float 3s infinite alternate ease-in-out; }
+        .animate-wiggle { animation: wiggle 4s infinite alternate ease-in-out; }
+        .animate-pulse-subtle { animation: pulse 3.5s infinite alternate ease-in-out; }
+        .animate-swing { animation: swing 5s infinite alternate ease-in-out; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 w-full bg-white/70 backdrop-blur-md rounded-full mt-4 mx-auto max-w-[90%] shadow-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[32px]">refresh</span>
+<span class="text-headline-md font-headline-xl font-bold text-primary">Loopy Diary</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg transition-transform hover:scale-105" href="#">How it Works</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg" href="#">Community</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-lg" href="#">Themes</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-secondary hover:rotate-90 transition-transform duration-500">settings</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-bold font-label-lg hover:scale-105 active:scale-95 transition-all">Log In</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-20 px-container-margin-mb md:px-container-margin-dt max-w-7xl mx-auto">
+<!-- Hero Section: Split Screen -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<!-- Left: Slot Machine Component -->
+<div class="relative flex flex-col items-center justify-center p-8 bg-white/40 rounded-xl backdrop-blur-sm border border-loopy-pink/20 sticky top-32">
+<!-- Pointer / Decoration -->
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+<div class="w-12 h-12 bg-loopy-rose rounded-full flex items-center justify-center shadow-lg animate-bounce">
+<span class="material-symbols-outlined text-white">expand_more</span>
+</div>
+</div>
+<!-- Sunburst Background -->
+<div class="sunburst" id="sunburst"></div>
+<!-- Slot Machine Selection Box -->
+<div class="slot-container">
+<div class="slot-overlay"></div>
+<div class="selection-marker"></div>
+<div class="slot-track" id="slot-track">
+<!-- Items will be populated via JS -->
+</div>
+</div>
+<!-- Result Action Buttons (Hidden by default) -->
+<div class="mt-8 flex gap-4 w-full justify-center hidden opacity-0 transition-opacity duration-500" id="result-actions">
+<button class="flex-1 flex items-center justify-center gap-3 bg-white border-2 border-primary text-primary px-6 py-4 rounded-full font-bold font-label-lg hover:bg-primary-fixed transition-all active:scale-95" id="okiela-btn">
+<img alt="Okiela Icon" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uj8it0Gzvt5obZUMYQIG912w_hmuo-_vfrVnixzFfINH08IuvPajUHy_YPVLAKKzdcGFeNcHbIbiTK-U-hrK6ZcBUgPLwIhr99mhSU6kso-h8xDcBTIfZ7V2EmwLphGZiyJ0mQzrTyyXuaNWIIaN2g0m6T43V_eIrTuetZPQehIWT0BxO4EGvIA7UCSU93ItshLwplVaTRgbdJEacx4aY3XC3QTQLLxMgvh7qfYIMiZAtE61W6QKMjW9o0"/>
+                    Okiela
+                </button>
+<button class="flex-1 flex items-center justify-center gap-3 bg-secondary text-white px-6 py-4 rounded-full font-bold font-label-lg hover:bg-loopy-rose transition-all active:scale-95 shadow-md" id="hogg-btn">
+<img alt="Hogg Icon" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugxP_nRSkhN4pdtdTlMqw57pS0GuhhSbbVk0P-gsfgmBiDYZCBWzy0m-q-zRdkHx95KOqodXF-gxZL4doQjTfoaUfkCLfYNnwZvkdOtE7IHblu5ySEaXzpA4TSyFCrvHLQ2KNhnwyzkMbDkdhXBhN0p1Uz-9cmD505n1oo51lO4mKIhsnDX-2Ys9-3cp69bJisnyInyXtICXwrfXAsoBctDDQQ4HKbzq30NTZ3Tfo-gsItKzcvOWhYHGBo"/>
+                    Hogg
+                </button>
+</div>
+<div class="mt-8 text-center" id="slot-caption">
+<h2 class="font-headline-lg text-secondary mb-2">Feeling Indecisive?</h2>
+<p class="text-body-lg text-on-surface-variant max-w-sm">Enter your options and let the Loopy Slot decide your fate!</p>
+</div>
+</div>
+<!-- Right: Control Panel -->
+<div class="flex flex-col gap-stack-gap">
+<div class="bg-white p-8 md:p-10 rounded-lg shadow-[0_8px_30px_rgba(254,179,193,0.3)] border border-loopy-pink/20 relative">
+<img alt="Thinking Loopy" class="hidden lg:block absolute -right-16 -top-16 w-32 h-32 object-contain drop-shadow-xl" src="https://lh3.googleusercontent.com/aida/ADBb0uhTynQ-0dQiXX0VUlEAZU-9t5d-wdOpMn5bqJ85B2TYWJnv2xtsruvJSytWHqcEnDtEhKlYsTb0BJc-ijBh9wpxecKAAvRG5wHMfJguckJGyfZK9jvF9xSIogcfSV4EYOU2cB-9oTcvpiytx6K6yicw1jQa_vd-8G1t3sXUlgyiha0QFSpEocY-c9ALKQk4yEttiS2hekNPxPlAnNAwKCEuUqqqdy4NkYnL7c3WT0dkuDADarg_mxqEAAA"/>
+<div class="flex justify-center mb-4 lg:hidden"><img alt="Thinking Loopy" class="w-24 h-24 object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhTynQ-0dQiXX0VUlEAZU-9t5d-wdOpMn5bqJ85B2TYWJnv2xtsruvJSytWHqcEnDtEhKlYsTb0BJc-ijBh9wpxecKAAvRG5wHMfJguckJGyfZK9jvF9xSIogcfSV4EYOU2cB-9oTcvpiytx6K6yicw1jQa_vd-8G1t3sXUlgyiha0QFSpEocY-c9ALKQk4yEttiS2hekNPxPlAnNAwKCEuUqqqdy4NkYnL7c3WT0dkuDADarg_mxqEAAA"/></div>
+<h1 class="font-headline-xl text-primary mb-6">Create Your Choices</h1>
+<!-- Input Section -->
+<div class="space-y-4 mb-8">
+<label class="font-label-lg text-on-surface-variant block ml-2">What are we deciding today?</label>
+<div class="relative">
+<input class="w-full h-16 px-6 rounded-full bg-loopy-cream border-2 border-transparent focus:border-loopy-pink focus:ring-4 focus:ring-loopy-pink/10 outline-none transition-all font-body-lg text-on-surface" id="option-input" placeholder="Add a choice (e.g. Movie Night)" type="text"/>
+<button class="absolute right-2 top-2 bottom-2 bg-secondary text-white px-6 rounded-full font-bold hover:bg-loopy-rose transition-colors flex items-center gap-2" id="add-btn">
+<span class="material-symbols-outlined">add</span>
+                            Add
+                        </button>
+</div>
+</div>
+<!-- List of Items -->
+<div class="mb-10">
+<div class="flex justify-between items-center mb-4 px-2">
+<h3 class="font-label-lg text-tertiary">CURRENT OPTIONS (<span id="opt-count">0</span>)</h3>
+<button class="text-primary font-bold text-sm hover:underline" id="clear-all">Clear All</button>
+</div>
+<div class="space-y-3" id="options-list">
+<!-- List populated by JS -->
+</div>
+</div>
+<!-- The Spin Button -->
+<button class="w-full py-6 rounded-full glossy-button text-white font-headline-md flex items-center justify-center gap-4 group disabled:opacity-50 disabled:pointer-events-none" id="spin-btn">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-180 transition-transform duration-700">refresh</span>
+                    SPIN
+                </button>
+</div>
+<!-- Glassy Quick Tools -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/60 backdrop-blur-md p-6 rounded-lg border border-white flex items-center gap-4 hover:bg-white transition-all cursor-pointer">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+<div>
+<p class="font-bold text-primary">Smart Random</p>
+<p class="text-xs text-on-surface-variant">AI-powered variety</p>
+</div>
+</div>
+<div class="bg-white/60 backdrop-blur-md p-6 rounded-lg border border-white flex items-center gap-4 hover:bg-white transition-all cursor-pointer">
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">share</span>
+</div>
+<div>
+<p class="font-bold text-secondary">Share Link</p>
+<p class="text-xs text-on-surface-variant">Play with friends</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Features Section -->
+<section class="mt-32">
+<h2 class="font-headline-lg text-center text-primary mb-12">More Than Just a Spin</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-white p-10 rounded-lg shadow-sm border border-loopy-pink/20 flex flex-col md:flex-row gap-8 items-center">
+<div class="w-full md:w-1/2 overflow-hidden rounded-lg">
+<img alt="Cool Loopy" class="rounded-lg w-full h-64 object-cover hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ugxP_nRSkhN4pdtdTlMqw57pS0GuhhSbbVk0P-gsfgmBiDYZCBWzy0m-q-zRdkHx95KOqodXF-gxZL4doQjTfoaUfkCLfYNnwZvkdOtE7IHblu5ySEaXzpA4TSyFCrvHLQ2KNhnwyzkMbDkdhXBhN0p1Uz-9cmD505n1oo51lO4mKIhsnDX-2Ys9-3cp69bJisnyInyXtICXwrfXAsoBctDDQQ4HKbzq30NTZ3Tfo-gsItKzcvOWhYHGBo"/>
+</div>
+<div class="w-full md:w-1/2">
+<h3 class="font-headline-md text-secondary mb-4">Community Themes</h3>
+<p class="text-body-md text-on-surface-variant">Browse thousands of community-made selection lists. From "What to watch" to "Daring challenges."</p>
+<button class="mt-6 text-primary font-bold flex items-center gap-2 hover:translate-x-2 transition-transform">
+                        Explore Library <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="bg-primary-container/20 p-8 rounded-lg border border-loopy-pink/30 flex flex-col items-center text-center">
+<div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm overflow-hidden border-2 border-primary-fixed">
+<img alt="Celebratory Loopy" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujxxY37Sa9QCHaBPYhWzPdzjUWefCar8G7i4DJSv5dQlgwOhcIKyclPP07wrLOtsaACISDSPhom7TAv_ffLOvh6Q7iRKgAS8-w-X9KPLbSyv2UWITT-YF5W_uyS3lTETCILPp_hcJu39CMdprL6WPdp84uUxuEJsMrdoPiwbSYJbhWrRqXIBCOu-2SPrgEZzXCXZcn6BlP_9NJSEOUtsVfs7TbHBn7IfIAN6sO6w6Wm1i0JAcN5zuqgJNA"/>
+</div>
+<h3 class="font-headline-md text-primary mb-2">History</h3>
+<p class="text-body-md text-on-surface-variant">Never forget what you spun. Your history is saved locally for quick access.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full flex flex-col items-center gap-4 px-container-margin-dt bg-surface-container-lowest py-12">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-[28px]">refresh</span>
+<span class="text-headline-md font-headline-md text-primary">Loopy Diary</span>
+</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8">
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors underline font-label-lg" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors underline font-label-lg" href="#">Terms of Service</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors underline font-label-lg" href="#">Contact Us</a>
+</div>
+<p class="text-secondary font-label-lg opacity-80">© 2024 Loopy Diary. Spin for Joy!</p>
+</footer>
+<!-- Decorative Background Characters -->
+<img alt="Decorative Loopy" class="fixed top-20 left-[-50px] w-48 h-48 object-contain opacity-40 -z-10 -rotate-12 pointer-events-none md:left-4 animate-float" src="https://lh3.googleusercontent.com/aida/ADBb0uhTynQ-0dQiXX0VUlEAZU-9t5d-wdOpMn5bqJ85B2TYWJnv2xtsruvJSytWHqcEnDtEhKlYsTb0BJc-ijBh9wpxecKAAvRG5wHMfJguckJGyfZK9jvF9xSIogcfSV4EYOU2cB-9oTcvpiytx6K6yicw1jQa_vd-8G1t3sXUlgyiha0QFSpEocY-c9ALKQk4yEttiS2hekNPxPlAnNAwKCEuUqqqdy4NkYnL7c3WT0dkuDADarg_mxqEAAA"/>
+<img alt="Decorative Loopy" class="fixed top-[40%] right-[-40px] w-40 h-40 object-contain opacity-30 -z-10 rotate-12 pointer-events-none md:right-10 animate-wiggle" src="https://lh3.googleusercontent.com/aida/ADBb0ui7YNP59p1BUE_YQGItEPlAPgwtnl5Q21T0VIDzES59hFSaoWJCv1JCoXxryaLCKCf0w65_hNzIA_yNSEeSJFozIzjr4_bEtcyzWyu-hmuYH7DYpbV1FaSqk2Yr4ztXo86DlsqsPN2FRHKfPVPIDqLuuqlxiC5MfpegGPHoe0knaORsEdx4b-fC36SVE0tpisrScIM26YEH6rvw7gSARgvk80joco8ZgCK-o1aKoNqKYwzh-8qNBdTQNHk"/>
+<img alt="Decorative Loopy" class="fixed bottom-[25%] left-10 w-52 h-52 object-contain opacity-30 -z-10 -rotate-6 pointer-events-none hidden lg:block animate-pulse-subtle" src="https://lh3.googleusercontent.com/aida/ADBb0ujxxY37Sa9QCHaBPYhWzPdzjUWefCar8G7i4DJSv5dQlgwOhcIKyclPP07wrLOtsaACISDSPhom7TAv_ffLOvh6Q7iRKgAS8-w-X9KPLbSyv2UWITT-YF5W_uyS3lTETCILPp_hcJu39CMdprL6WPdp84uUxuEJsMrdoPiwbSYJbhWrRqXIBCOu-2SPrgEZzXCXZcn6BlP_9NJSEOUtsVfs7TbHBn7IfIAN6sO6w6Wm1i0JAcN5zuqgJNA"/>
+<img alt="Decorative Loopy" class="fixed bottom-20 right-5 w-44 h-44 object-contain opacity-40 -z-10 rotate-[15deg] pointer-events-none animate-swing" src="https://lh3.googleusercontent.com/aida/ADBb0ugxP_nRSkhN4pdtdTlMqw57pS0GuhhSbbVk0P-gsfgmBiDYZCBWzy0m-q-zRdkHx95KOqodXF-gxZL4doQjTfoaUfkCLfYNnwZvkdOtE7IHblu5ySEaXzpA4TSyFCrvHLQ2KNhnwyzkMbDkdhXBhN0p1Uz-9cmD505n1oo51lO4mKIhsnDX-2Ys9-3cp69bJisnyInyXtICXwrfXAsoBctDDQQ4HKbzq30NTZ3Tfo-gsItKzcvOWhYHGBo"/>
+<script>
+    let options = ['Order Pizza', 'Sushi Night', 'Taco Tuesday', 'Salad Bowl', 'Dim Sum', 'Burger King'];
+    const track = document.getElementById('slot-track');
+    const input = document.getElementById('option-input');
+    const addBtn = document.getElementById('add-btn');
+    const spinBtn = document.getElementById('spin-btn');
+    const optionsList = document.getElementById('options-list');
+    const optCountDisplay = document.getElementById('opt-count');
+    const sunburst = document.getElementById('sunburst');
+    const resultActions = document.getElementById('result-actions');
+    const okielaBtn = document.getElementById('okiela-btn');
+    const hoggBtn = document.getElementById('hogg-btn');
+    
+    let currentWinnerIndex = null;
+    let isSpinning = false;
+
+    function updateOptionsDisplay() {
+        optionsList.innerHTML = '';
+        optCountDisplay.textContent = options.length;
+        options.forEach((opt, index) => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-4 bg-loopy-cream/50 rounded-full border border-loopy-pink/10 group hover:bg-white hover:shadow-md transition-all';
+            div.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-white font-bold text-sm">${index + 1}</div>
+                    <span class="font-body-md text-on-surface">${opt}</span>
+                </div>
+                <button onclick="removeOption(${index})" class="material-symbols-outlined text-outline hover:text-error transition-opacity">delete</button>
+            `;
+            optionsList.appendChild(div);
+        });
+
+        // Update Slot Track
+        populateSlotTrack();
+        
+        // Disable spin if no options
+        spinBtn.disabled = options.length === 0;
+    }
+
+    function populateSlotTrack() {
+        track.innerHTML = '';
+        if (options.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'slot-item text-outline italic text-lg';
+            empty.textContent = 'Add some options!';
+            track.appendChild(empty);
+            return;
+        }
+        // Create a long enough list for spinning
+        const repeatCount = Math.max(6, Math.floor(30 / options.length));
+        const repeatedOptions = [];
+        for(let i=0; i<repeatCount; i++) repeatedOptions.push(...options);
+        
+        repeatedOptions.forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'slot-item';
+            div.textContent = opt;
+            track.appendChild(div);
+        });
+    }
+
+    window.removeOption = function(index) {
+        options.splice(index, 1);
+        updateOptionsDisplay();
+    };
+
+    addBtn.addEventListener('click', () => {
+        if (input.value.trim()) {
+            options.push(input.value.trim());
+            input.value = '';
+            updateOptionsDisplay();
+        }
+    });
+
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && input.value.trim()) {
+            options.push(input.value.trim());
+            input.value = '';
+            updateOptionsDisplay();
+        }
+    });
+
+    document.getElementById('clear-all').addEventListener('click', () => {
+        options = [];
+        updateOptionsDisplay();
+    });
+
+    function hideResultActions() {
+        resultActions.classList.add('hidden');
+        resultActions.classList.remove('flex');
+        resultActions.style.opacity = '0';
+    }
+
+    function showResultActions() {
+        resultActions.classList.remove('hidden');
+        resultActions.classList.add('flex');
+        setTimeout(() => {
+            resultActions.style.opacity = '1';
+        }, 10);
+    }
+
+    function resetSlot() {
+        track.style.transition = 'none';
+        track.style.transform = 'translateY(0px)';
+        sunburst.classList.remove('active');
+        hideResultActions();
+    }
+
+    spinBtn.addEventListener('click', () => {
+        if (isSpinning || options.length === 0) return;
+        isSpinning = true;
+        resetSlot();
+
+        const itemHeight = 100;
+        const totalItemsInTrack = track.children.length;
+        currentWinnerIndex = Math.floor(Math.random() * options.length);
+        
+        // We target the final set of options at the bottom of the track
+        const targetGlobalIndex = totalItemsInTrack - options.length + currentWinnerIndex;
+        // The center of the 300px box is at item index 1 (0, 1, 2)
+        // To put item targetGlobalIndex in the center (selection marker), it needs to be the 2nd item visible.
+        // So the scroll offset is (targetGlobalIndex - 1) * itemHeight
+        const spinDistance = (targetGlobalIndex - 1) * itemHeight;
+
+        // Reset track position without transition
+        track.style.transition = 'none';
+        track.style.transform = 'translateY(0px)';
+
+        // Force reflow
+        track.offsetHeight;
+
+        // Apply spin
+        track.style.transition = 'transform 4s cubic-bezier(0.1, 0, 0, 1)';
+        track.style.transform = `translateY(-${spinDistance}px)`;
+
+        setTimeout(() => {
+            isSpinning = false;
+            // Celebration
+            sunburst.classList.add('active');
+            showResultActions();
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#FF85A2', '#FEB3C1', '#884d5a', '#ffffff']
+            });
+        }, 4000);
+    });
+
+    okielaBtn.addEventListener('click', () => {
+        hideResultActions();
+        sunburst.classList.remove('active');
+    });
+
+    hoggBtn.addEventListener('click', () => {
+        if (currentWinnerIndex !== null) {
+            options.splice(currentWinnerIndex, 1);
+            updateOptionsDisplay();
+            resetSlot();
+            currentWinnerIndex = null;
+        }
+    });
+
+    // Initial Load
+    updateOptionsDisplay();
+</script>
+</body></html>
