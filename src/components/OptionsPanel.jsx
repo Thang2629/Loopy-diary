@@ -1,13 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import foodData from '../data/foodItems.json';
 import loopy2 from '../assets/images/loopy-2.jpg';
+import backgroundMusic from '../assets/audio/cutie.mp3';
 
 // Dynamically import all files under src/assets/food
 const foodImages = import.meta.glob('../assets/food/*', { eager: true, import: 'default' });
 
 const OptionsPanel = ({ options, addOption, removeOption, clearOptions, spinBtnDisabled, onSpin }) => {
   const [inputValue, setInputValue] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
+  const toggleMusic = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.error("Autoplay prevented:", e));
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  useEffect(() => {
+    const tryPlayAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.log("Autoplay blocked by browser. Waiting for user interaction...");
+          
+          const playOnInteract = () => {
+            if (audioRef.current) {
+              audioRef.current.play()
+                .then(() => setIsPlaying(true))
+                .catch(e => console.error("Play failed on interact:", e));
+            }
+            ['click', 'touchstart', 'keydown'].forEach(event => 
+              document.removeEventListener(event, playOnInteract)
+            );
+          };
+
+          ['click', 'touchstart', 'keydown'].forEach(event => 
+            document.addEventListener(event, playOnInteract, { once: true })
+          );
+        }
+      }
+    };
+    
+    setTimeout(tryPlayAudio, 100);
+  }, []);
   const handleAdd = () => {
     const text = inputValue.trim();
     if (text) {
@@ -75,7 +116,19 @@ const OptionsPanel = ({ options, addOption, removeOption, clearOptions, spinBtnD
         
         {/* Input Section */}
         <div className="space-y-4 mb-8">
-          <label className="font-label-lg text-on-surface-variant block ml-2">Hôm nay tụi mình quyết định gì nè?</label>
+          <div className="flex items-center justify-between ml-2">
+            <label className="font-label-lg text-on-surface-variant block">Hôm nay tụi mình quyết định gì nè?</label>
+            <button 
+              onClick={toggleMusic}
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors mr-2 md:mr-0"
+              title="Bật/tắt nhạc"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                {isPlaying ? 'music_note' : 'music_off'}
+              </span>
+            </button>
+            <audio ref={audioRef} src={backgroundMusic} loop />
+          </div>
           <div className="relative">
             <input 
               className="w-full h-14 md:h-16 pl-4 md:pl-6 pr-24 md:pr-32 rounded-full bg-loopy-cream border-2 border-transparent focus:border-loopy-pink focus:ring-4 focus:ring-loopy-pink/10 outline-none transition-all text-sm md:text-base font-body-lg text-on-surface" 
