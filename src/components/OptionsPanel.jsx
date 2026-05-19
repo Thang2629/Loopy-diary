@@ -97,8 +97,8 @@ const OptionsPanel = ({ options, addOption, removeOption, clearOptions, spinBtnD
   };
 
   return (
-    <div className="flex flex-col gap-stack-gap h-full">
-      <div className="bg-white p-4 md:p-10 rounded-lg shadow-[0_8px_30px_rgba(254,179,193,0.3)] border border-loopy-pink/20 relative flex-1 flex flex-col">
+    <div className="flex flex-col gap-stack-gap">
+      <div className="bg-white p-4 md:p-10 rounded-lg shadow-[0_8px_30px_rgba(254,179,193,0.3)] border border-loopy-pink/20 relative flex flex-col">
         <img 
           alt="Thinking Loopy" 
           className="hidden lg:block absolute -right-16 -top-16 w-32 h-32 object-contain drop-shadow-xl rounded-full mix-blend-multiply" 
