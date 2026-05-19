@@ -149,7 +149,7 @@ const OptionsPanel = ({ options, addOption, removeOption, clearOptions, spinBtnD
         </div>
 
         {/* List of Items */}
-        <div className="mb-10 flex-1 overflow-y-auto pr-2" style={{maxHeight: '300px'}}>
+        <div className="mb-10 h-[300px] md:h-[350px] overflow-y-auto pr-2">
           <div className="flex justify-between items-center mb-4 px-2">
             <h3 className="font-label-lg text-tertiary">LỰA CHỌN HIỆN TẠI (<span>{options.length}</span>)</h3>
             <button 

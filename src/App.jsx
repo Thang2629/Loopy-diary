@@ -5,9 +5,36 @@ import OptionsPanel from './components/OptionsPanel';
 import NavBar from './components/NavBar';
 import LoveSection from './components/LoveSection';
 import Footer from './components/Footer';
+import foodData from './data/foodItems.json';
+
+const foodImages = import.meta.glob('./assets/food/*', { eager: true, import: 'default' });
+
+const initialOptions = foodData.map(match => {
+  let finalImage = '';
+  if (match.image) {
+    if (match.image.startsWith('http://') || match.image.startsWith('https://')) {
+      finalImage = match.image;
+    } else {
+      const exactPath = `./assets/food/${match.image}`;
+      if (foodImages[exactPath]) {
+        finalImage = foodImages[exactPath];
+      } else {
+        const baseName = match.image.substring(0, match.image.lastIndexOf('.')) || match.image;
+        const foundKey = Object.keys(foodImages).find(key => {
+          const fileBase = key.substring(key.lastIndexOf('/') + 1, key.lastIndexOf('.'));
+          return fileBase.toLowerCase() === baseName.toLowerCase();
+        });
+        if (foundKey) {
+          finalImage = foodImages[foundKey];
+        }
+      }
+    }
+  }
+  return { name: match.name, image: finalImage };
+});
 
 function App() {
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(initialOptions);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinTrigger, setSpinTrigger] = useState(0);
 
