@@ -1,5 +1,6 @@
 import React from 'react';
-
+import coupleLoopy from '../assets/images/couple_loopy.png';
+import memoryLoopy from '../assets/images/memory_loopy.png';
 const LoveSection = () => {
   return (
     <section className="mt-32">
@@ -7,7 +8,7 @@ const LoveSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 bg-white p-10 rounded-lg shadow-sm border border-loopy-pink/20 flex flex-col md:flex-row gap-8 items-center">
           <div className="w-full md:w-1/2 overflow-hidden rounded-lg">
-            <img alt="Couple Loopy" className="rounded-lg w-full h-64 object-cover hover:scale-105 transition-transform duration-700 shadow-md" src="/couple_loopy.png"/>
+            <img alt="Couple Loopy" className="rounded-lg w-full h-64 object-cover hover:scale-105 transition-transform duration-700 shadow-md" src={coupleLoopy}/>
           </div>
           <div className="w-full md:w-1/2">
             <h3 className="font-headline-md text-secondary mb-4 flex items-center gap-2">
@@ -24,7 +25,7 @@ const LoveSection = () => {
         
         <div className="bg-primary-container/20 p-8 rounded-lg border border-loopy-pink/30 flex flex-col items-center text-center">
           <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm overflow-hidden border-2 border-primary-fixed p-1">
-            <img alt="Memory Loopy" className="w-full h-full object-cover rounded-full" src="/memory_loopy.png"/>
+            <img alt="Memory Loopy" className="w-full h-full object-cover rounded-full" src={memoryLoopy}/>
           </div>
           <h3 className="font-headline-md text-primary mb-2 flex items-center gap-2 justify-center">
             <span className="material-symbols-outlined text-primary">photo_library</span>
